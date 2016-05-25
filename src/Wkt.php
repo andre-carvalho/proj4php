@@ -317,6 +317,18 @@ class Wkt {
 		default:
 			break;
 		}
+		
+		if(!isset($wktParams->epsgCode)) {
+			
+			foreach ($wktArray as $item) {
+				$auth=strpos($item, "AUTHORITY");
+				if($auth===0) {
+					$wktSectionsFirstLevel = self::ParseWKTIntoSections($item);
+					$wktParams->epsgCode = $wktSectionsFirstLevel[1].":".str_replace('"', '', $wktSectionsFirstLevel[2][0]);
+					break;
+				}
+			}
+		}
 
 		foreach ($wktArray as $wktArrayContent) {
 
